@@ -1,0 +1,9 @@
+<html>
+<head>
+</head>
+<body>
+    {% for addr in addresses %}
+        <p>{{ addr[1:]|join(', ') }}</p>
+    {% endfor %}
+</body>
+</html>
