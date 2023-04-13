@@ -1,11 +1,26 @@
 <html>
+
 <head>
+    <link rel="stylesheet" href="static/css/bootstrap.min.css">
     <meta charset="UTF-8">
     <title></title>
 </head>
+
 <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">CTab</a>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav">
+                <a class="nav-link active" href="#">Главная <span class="sr-only">(current)</span></a>
+                <a class="nav-link" href="#">Штуки</a>
+                <a class="nav-link" href="#">Дрюки</a>
+                <a class="nav-link disabled">А это низя</a>
+            </div>
+        </div>
+    </nav>
     {% for addr in addresses %}
-        <p>{{ addr[1:]|join(', ') }}</p>
+    <p>{{ addr[1:]|join(', ') }}</p>
     {% endfor %}
 </body>
+
 </html>
