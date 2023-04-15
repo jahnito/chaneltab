@@ -59,4 +59,9 @@ def index():
     return render_template('index.html', addresses=addresses, tech_pos=tech_pos)
 
 
+@app.route('/add_object.html')
+def add_object():
+    return render_template('add_object.html')
+
+
 app.run(host='127.0.0.1', port=8080)
