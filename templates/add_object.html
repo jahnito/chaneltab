@@ -1,27 +1,31 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <div class="col-sm-2">
-    </div>
-    <div class="col-sm-8">
-    <form action="" method="post">
-            {{ form.csrf_token() }}
-            {% if form.csrf_token.errors %}
-                <div class="warning">You have submitted an invalid CSRF token</div>
-            {% endif %}
-            {% for field in form if field.name not in ['csrf_token', 'submit'] %}
-            <div class="form-group row">
-                <div class="col-sm-3 col-form-label">{{ field.label }}</div> 
-                <div class="col-sm-5">{{ field(class_="form-control") }}</div>
-            </div>
-                {% for error in field.errors %}
-                    {{ error }}
+    <div class="row">
+        <div class="col-sm">
+            <form action="" method="post">
+                {{ form.csrf_token() }}
+                {% if form.csrf_token.errors %}
+                    <div class="warning">You have submitted an invalid CSRF token</div>
+                {% endif %}
+                {% for field in form if field.name not in ['csrf_token', 'submit'] %}
+                <div class="form-group row">
+                    <div class="col col-form-label">{{ field.label }}</div> 
+                    <div class="col">{{ field(class_="form-control") }}</div>
+                </div>
+                    {% for error in field.errors %}
+                        {{ error }}
+                    {% endfor %}
                 {% endfor %}
+                {{ form.submit(class_="btn btn-primary") }}
+            </form>
+        </div>
+        {% if addr_data %}
+        <div class="col-sm">
+            {% for line  in addr_data.items() %}
+                <p> {{ line }} </p>
             {% endfor %}
-            {{ form.submit(class_="btn btn-primary") }}
-        </form>
+        </div>
+        {% endif %} 
     </div>
-    <div class="col-sm-2">
-    </div>
-    
 {% endblock %}
