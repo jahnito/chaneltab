@@ -28,11 +28,11 @@ def get_addresses(db: str) -> list:
     '''
     connection = sqlite3.connect(db)
     cursor = connection.cursor()
-    cursor.execute("""SELECT region.name, address.area, address.city, address.street, address.building, areas.area_name, address.id
+    cursor.execute("""SELECT region.name, address.area, address.city, address.street, address.building, areas_owners.area_name, address.id
                     FROM
-                    address, areas, region
+                    address, areas_owners, region
 					WHERE
-					address.area_id = areas.id
+					address.area_id = areas_owners.id
 					AND
 					region.id = address.region_id""")
     return [ i for i in cursor ]
@@ -41,7 +41,7 @@ def get_addresses(db: str) -> list:
 def get_areas(db):
     connection = sqlite3.connect(db)
     cursor = connection.cursor()
-    cursor.execute('''SELECT areas.id, areas.area_name FROM areas ORDER BY areas.area_name''')
+    cursor.execute('''SELECT areas_owners.id, areas_owners.area_name FROM areas_owners ORDER BY areas_owners.area_name''')
     return [ (i[0], i[1]) for i in cursor ]
 
 

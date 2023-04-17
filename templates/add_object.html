@@ -6,7 +6,7 @@
             <!-- скрытый отступ - поля -->
         </div>
         <div class="col">
-            <form action="" method="post">
+            <form action="add_object.html" method="post">
                 {{ form.csrf_token() }}
                 {% if form.csrf_token.errors %}
                     <div class="warning">You have submitted an invalid CSRF token</div>
@@ -14,7 +14,7 @@
                 {% for field in form if field.name not in ['csrf_token', 'submit'] %}
                 <div class="form-group row">
                     <div class="col col-form-label">{{ field.label }}</div> 
-                    <div class="col">{{ field(class_="form-control") }}</div>
+                    <div class="col">{{ field(class_="form-control", autocomplete="off") }}</div>
                 </div>
                     {% for error in field.errors %}
                         {{ error }}
@@ -28,9 +28,7 @@
             {% if message %}
                 <a> {{ message }} </a>
             {% endif %}
-            {% for line  in addr_data.items() %}
-                <p> {{ line }} </p>
-            {% endfor %}
+            <p> {{ addr_data.values()|join(', ') }} </p>
         </div>
         {% else %}
         <div class="col border border-warning">
