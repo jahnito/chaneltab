@@ -2,7 +2,10 @@
 
 {% block content %}
     <div class="row">
-        <div class="col-sm">
+        <div class="col-1">
+            <!-- скрытый отступ - поля -->
+        </div>
+        <div class="col">
             <form action="" method="post">
                 {{ form.csrf_token() }}
                 {% if form.csrf_token.errors %}
@@ -21,11 +24,21 @@
             </form>
         </div>
         {% if addr_data %}
-        <div class="col-sm">
+        <div class="col border border-success">
+            {% if message %}
+                <a> {{ message }} </a>
+            {% endif %}
             {% for line  in addr_data.items() %}
                 <p> {{ line }} </p>
             {% endfor %}
         </div>
-        {% endif %} 
+        {% else %}
+        <div class="col border border-warning">
+            <p></p>
+        </div>
+        {% endif %}
+        <div class="col-1">
+            <!-- скрытый отступ - поля -->
+        </div>
     </div>
 {% endblock %}

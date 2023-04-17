@@ -26,8 +26,9 @@ def add_object():
         addr_data['building'] = request.values.get('building')
         addr_data['region'] = request.values.get('region')
         addr_data['area_id'] = request.values.get('area_id')
+        message = add_new_address(DB, addr_data)
         form = AddAddressForm()
-        return render_template('add_object.html', addr_data=addr_data, form=form)
+        return render_template('add_object.html', addr_data=addr_data, form=form, message=message)
     else:
         form = AddAddressForm()
         return render_template('add_object.html', form=form)

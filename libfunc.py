@@ -50,3 +50,27 @@ def get_regions(db):
     cursor = connection.cursor()
     cursor.execute('''SELECT region.id, region.name FROM region ORDER BY region.name''')
     return [ (i[0], i[1]) for i in cursor ]
+
+
+def add_new_address(db, addr_data: dict):
+    connection = sqlite3.connect(db)
+    cursor = connection.cursor()
+    cursor.execute('''SELECT count() FROM address
+                    WHERE area = ? 
+                    AND city = ? 
+                    AND street = ? 
+                    AND building = ? 
+                    AND region_id = ? 
+                    AND area_id = ?
+                    ''', [addr_data.get('area'), addr_data.get('city'), addr_data.get('street'),
+                        addr_data.get('building'), addr_data.get('region'), addr_data.get('area_id')])
+    if cursor.fetchone()[0] > 0 :
+        return 'Объект уже существует!'
+    else:
+        cursor.execute('''INSERT INTO address (area, city, street, building, region_id, area_id )
+                                    VALUES ( ?, ?, ?, ?, ?, ?)''', [addr_data.get('area'),
+                                    addr_data.get('city'), addr_data.get('street'),
+                                    addr_data.get('building'), addr_data.get('region'), 
+                                    addr_data.get('area_id')])
+        connection.commit()
+        return 'Объект добавлен!'

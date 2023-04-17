@@ -12,4 +12,4 @@ class AddAddressForm(FlaskForm):
     building = StringField("Номер строения/корпус/литер: ")
     region = SelectField("Регион: ", choices=get_regions(DB))
     area_id = SelectField("Юрисдикция / Принадлежность: ", choices=get_areas(DB))
-    submit = SubmitField("Загрузить")
+    submit = SubmitField("Сохранить")

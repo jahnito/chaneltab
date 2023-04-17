@@ -1,6 +1,11 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<div class="row">
+    <div class="col-1">
+        <!-- скрытый отступ - поля -->
+    </div>
+    <div class="col">
         <table class="table table-striped">
             <thead>
                 <tr >
@@ -24,4 +29,9 @@
                 {% endfor %}
             </tbody>
         </table>
+    </div>
+    <div class="col-1">
+        <!-- скрытый отступ - поля -->
+    </div>
+</div>
 {% endblock %}
