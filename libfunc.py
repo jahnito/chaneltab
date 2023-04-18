@@ -28,24 +28,33 @@ def get_addresses(db: str) -> list:
     '''
     connection = sqlite3.connect(db)
     cursor = connection.cursor()
-    cursor.execute("""SELECT region.name, address.area, address.city, address.street, address.building, areas_owners.area_name, address.id
-                    FROM
-                    address, areas_owners, region
-					WHERE
-					address.area_id = areas_owners.id
-					AND
-					region.id = address.region_id""")
+    cursor.execute("""SELECT region.name, areas.area_name, address.city, address.street, address.building, areas_owners.area_name, address.id
+       FROM
+       address, areas_owners, region, areas
+	   WHERE
+	   areas.id = address.area_id
+	   AND
+	   areas_owners.id = address.area_owner
+	   AND
+	   region.id = address.region_id""")
     return [ i for i in cursor ]
 
 
-def get_areas(db):
+def get_areas(db) -> list:
+    connection = sqlite3.connect(db)
+    cursor = connection.cursor()
+    cursor.execute('''SELECT areas.id, areas.area_name FROM areas ORDER BY areas.area_name''')
+    return [ (i[0], i[1]) for i in cursor ]
+
+
+def get_area_owners(db) -> list:
     connection = sqlite3.connect(db)
     cursor = connection.cursor()
     cursor.execute('''SELECT areas_owners.id, areas_owners.area_name FROM areas_owners ORDER BY areas_owners.area_name''')
     return [ (i[0], i[1]) for i in cursor ]
 
 
-def get_regions(db):
+def get_regions(db) -> list:
     connection = sqlite3.connect(db)
     cursor = connection.cursor()
     cursor.execute('''SELECT region.id, region.name FROM region ORDER BY region.name''')
@@ -56,21 +65,25 @@ def add_new_address(db, addr_data: dict):
     connection = sqlite3.connect(db)
     cursor = connection.cursor()
     cursor.execute('''SELECT count() FROM address
-                    WHERE area = ? 
+                    WHERE area_id = ? 
                     AND city = ? 
                     AND street = ? 
                     AND building = ? 
                     AND region_id = ? 
-                    AND area_id = ?
-                    ''', [addr_data.get('area'), addr_data.get('city'), addr_data.get('street'),
-                        addr_data.get('building'), addr_data.get('region'), addr_data.get('area_id')])
-    if cursor.fetchone()[0] > 0 :
+                    AND area_owner = ?
+                    ''', [addr_data.get('area_id'), addr_data.get('city'), addr_data.get('street'),
+                        addr_data.get('building'), addr_data.get('region'), addr_data.get('area_owner')])
+    if cursor.fetchone()[0] > 0:
         return 'Объект уже существует!'
+    elif not addr_data.get('area_id'):
+        return 'ВНИМАНИЕ! Не выбран район!'
+    elif not addr_data.get('area_owner'):
+        return 'ВНИМАНИЕ! Не выбрана принадлежность!'
     else:
-        cursor.execute('''INSERT INTO address (area, city, street, building, region_id, area_id )
-                                    VALUES ( ?, ?, ?, ?, ?, ?)''', [addr_data.get('area'),
+        cursor.execute('''INSERT INTO address (area_id, city, street, building, region_id, area_owner )
+                                    VALUES ( ?, ?, ?, ?, ?, ?)''', [addr_data.get('area_id'),
                                     addr_data.get('city'), addr_data.get('street'),
                                     addr_data.get('building'), addr_data.get('region'), 
-                                    addr_data.get('area_id')])
+                                    addr_data.get('area_owner')])
         connection.commit()
         return 'Объект добавлен!'

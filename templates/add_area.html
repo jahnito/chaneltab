@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-1">
+            <!-- скрытый отступ - поля -->
+        </div>
+        <div class="col">
+            <form action="add_area.html" method="post">
+                {{ form.csrf_token() }}
+                {% if form.csrf_token.errors %}
+                    <div class="warning">You have submitted an invalid CSRF token</div>
+                {% endif %}
+                {% for field in form if field.name not in ['csrf_token', 'submit'] %}
+                <div class="form-group row">
+                    <div class="col col-form-label">{{ field.label }}</div> 
+                    <div class="col">{{ field(class_="form-control", autocomplete="off") }}</div>
+                </div>
+                    {% for error in field.errors %}
+                        {{ error }}
+                    {% endfor %}
+                {% endfor %}
+                {{ form.submit(class_="btn btn-primary") }}
+            </form>
+        </div>
+        {% if addr_data %}
+        <div class="col border border-success">
+            {% if message %}
+                <a> {{ message }} </a>
+            {% endif %}
+            <p> {{ addr_data.values()|join(', ') }} </p>
+        </div>
+        {% else %}
+        <div class="col border border-warning">
+            <p></p>
+        </div>
+        {% endif %}
+        <div class="col-1">
+            <!-- скрытый отступ - поля -->
+        </div>
+    </div>
+{% endblock %}

@@ -1,20 +1,28 @@
 BEGIN TRANSACTION;
 
 CREATE TABLE IF NOT EXISTS "address" (
-	"id"	INTEGER PRIMARY KEY AUTOINCREMENT,
-	"area"	TEXT,
+	"id"	INTEGER,
+	"area_id"	INTEGER,
 	"city"	TEXT,
 	"street"	TEXT,
 	"building"	TEXT,
 	"region_id"	INTEGER,
-	"area_id"	INTEGER
+	"area_owner"	INTEGER,
+	PRIMARY KEY("id" AUTOINCREMENT)
+);
+
+CREATE TABLE IF NOT EXISTS "areas" (
+	"id"	INTEGER UNIQUE,
+	"area_name"	TEXT UNIQUE,
+	"description"	TEXT,
+	PRIMARY KEY("id")
 );
 
 CREATE TABLE IF NOT EXISTS "areas_owners" (
 	"id"	INTEGER UNIQUE,
 	"area_name"	TEXT UNIQUE,
 	PRIMARY KEY("id" AUTOINCREMENT)
-)
+);
 
 CREATE TABLE "main" (
 	"id"	INTEGER,
