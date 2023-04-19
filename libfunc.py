@@ -36,29 +36,38 @@ def get_addresses(db: str) -> list:
 	   AND
 	   areas_owners.id = address.area_owner
 	   AND
-	   region.id = address.region_id""")
-    return [ i for i in cursor ]
+	   region.id = address.region_id
+       ORDER BY areas.area_name, address.city, address.street""")
+    result = [ i for i in cursor ]
+    connection.close()
+    return result
 
 
 def get_areas(db) -> list:
     connection = sqlite3.connect(db)
     cursor = connection.cursor()
     cursor.execute('''SELECT areas.id, areas.area_name FROM areas ORDER BY areas.area_name''')
-    return [ (i[0], i[1]) for i in cursor ]
+    result = [ (i[0], i[1]) for i in cursor ]
+    connection.close()
+    return result
 
 
 def get_area_owners(db) -> list:
     connection = sqlite3.connect(db)
     cursor = connection.cursor()
     cursor.execute('''SELECT areas_owners.id, areas_owners.area_name FROM areas_owners ORDER BY areas_owners.area_name''')
-    return [ (i[0], i[1]) for i in cursor ]
+    result = [ (i[0], i[1]) for i in cursor ]
+    connection.close()
+    return result
 
 
 def get_regions(db) -> list:
     connection = sqlite3.connect(db)
     cursor = connection.cursor()
     cursor.execute('''SELECT region.id, region.name FROM region ORDER BY region.name''')
-    return [ (i[0], i[1]) for i in cursor ]
+    result = [ (i[0], i[1]) for i in cursor ]
+    connection.close()
+    return result
 
 
 def add_new_address(db, addr_data: dict):
@@ -86,4 +95,29 @@ def add_new_address(db, addr_data: dict):
                                     addr_data.get('building'), addr_data.get('region'), 
                                     addr_data.get('area_owner')])
         connection.commit()
+        connection.close()
         return 'Объект добавлен!'
+
+
+def add_new_area(db, area_data: dict):
+    connection = sqlite3.connect(db)
+    cursor = connection.cursor()
+    cursor.execute('''SELECT count() FROM areas
+                      WHERE
+                      id = ?
+                      AND
+                      area_name = ?''', [area_data.get('id'), area_data.get('area_name')])
+    if cursor.fetchone()[0] > 0:
+        return 'Район уже существует!'
+    elif not area_data.get('area_name'):
+        return 'ВНИМАНИЕ! Не определено наименование района!'
+    else:
+        try:
+            cursor.execute('''INSERT INTO areas (id, area_name, description )
+                                        VALUES ( ?, ?, ?)''', [area_data.get('id'),
+                                        area_data.get('area_name'), area_data.get('description')])
+            connection.commit()
+            connection.close()
+            return 'Объект добавлен!'
+        except sqlite3.IntegrityError as e:
+            return f'Ошибка SQL {e}'

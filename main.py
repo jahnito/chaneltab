@@ -36,17 +36,13 @@ def add_object():
 @app.route('/add_area.html', methods=['GET','POST'])
 def add_area():
     if request.method == 'POST':
-        addr_data = {}
-        # addr_data['area_id'] = request.values.get('area_id')
-        # addr_data['city'] = request.values.get('city')
-        # addr_data['street'] = request.values.get('street')
-        # addr_data['building'] = request.values.get('building')
-        # addr_data['region'] = request.values.get('region')
-        # addr_data['area_owner'] = request.values.get('area_owner')
-        # message = add_new_address(DB, addr_data)
-        # form = AddAddressForm()
-        # return render_template('add_object.html', addr_data=addr_data, form=form, message=message)
-        return render_template('add_area.html', form=form)
+        area_data = {}
+        area_data['id'] = request.values.get('id')
+        area_data['area_name'] = request.values.get('area_name')
+        area_data['description'] = request.values.get('description')
+        message = add_new_area(DB, area_data)
+        form = AddAreaForm()
+        return render_template('add_area.html', area_data=area_data, form=form, message=message)
     else:
         form = AddAreaForm()
         return render_template('add_area.html', form=form)

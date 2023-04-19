@@ -23,12 +23,12 @@
                 {{ form.submit(class_="btn btn-primary") }}
             </form>
         </div>
-        {% if addr_data %}
+        {% if area_data %}
         <div class="col border border-success">
             {% if message %}
                 <a> {{ message }} </a>
             {% endif %}
-            <p> {{ addr_data.values()|join(', ') }} </p>
+            <p> {{ area_data.values()|join(', ') }} </p>
         </div>
         {% else %}
         <div class="col border border-warning">
