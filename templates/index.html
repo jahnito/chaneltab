@@ -17,7 +17,13 @@
             <tbody>
                 {% for addr in addresses %}
                 <tr title="{{ addr[-1] }}">
-                    <td>{{ addr[:-2]|join(', ') }}</td>
+                    <td>{% if addr[2].startswith('г.') %}
+                            <!-- Если в поле населенного пункта город, тогда не выводим район -->
+                            {{ addr[0:1] |join(', ') }}, {{ addr[2:-2] |join(', ') }}
+                        {% else %}
+                            {{ addr[:-2] |join(', ') }}
+                        {% endif %}
+                    </td>
                     <td>{{ addr[-2] }}</td>
                     <td class="position-relative">
                             {% for item in tech_pos[addr[-1]] %}
