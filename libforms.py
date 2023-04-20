@@ -15,6 +15,16 @@ class AddAddressForm(FlaskForm):
     submit = SubmitField("Сохранить")
 
 
+class EditAddressForm(FlaskForm):
+    area_id = SelectField("Район: ", choices=get_areas(DB))
+    city = StringField("Населенный пункт: ")
+    street = StringField("Улица: ")
+    building = StringField("Номер строения/корпус/литер: ")
+    region = SelectField("Регион: ", choices=get_regions(DB))
+    area_owner = SelectField("Юрисдикция / Принадлежность: ", choices=get_area_owners(DB))
+    submit = SubmitField("Редактировать")
+
+
 class AddAreaForm(FlaskForm):
     id = StringField("ID Района: ")
     area_name = StringField("Наименование района: ")

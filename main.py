@@ -1,7 +1,7 @@
 # coding:utf8
 from flask import Flask, request, render_template
 from libfunc import *
-from libforms import AddAddressForm, AddAreaForm
+from libforms import AddAddressForm, AddAreaForm, EditAddressForm
 from config import DB
 
 app = Flask(__name__)
@@ -13,6 +13,16 @@ def index():
     tech_pos = tech_possible(DB)
     addresses = get_addresses(DB)
     return render_template('index.html', addresses=addresses, tech_pos=tech_pos)
+
+
+@app.route('/edit_object.html', methods=['GET','POST'])
+def edit_object():
+    addresses = get_addresses(DB)
+    if request.method == 'POST':
+        form = EditAddressForm()
+        return render_template('edit_object.html', addresses=addresses, form=form)
+    else:
+        return render_template('edit_object.html', addresses=addresses)
 
 
 @app.route('/add_object.html', methods=['GET','POST'])
