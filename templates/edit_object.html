@@ -13,7 +13,7 @@
                 {% if form.csrf_token.errors %}
                     <div class="warning">You have submitted an invalid CSRF token</div>
                 {% endif %}
-                {% for field in form if field.name not in ['csrf_token', 'submit'] %}
+                {% for field in form if field.name not in ['csrf_token', 'id', 'submit'] %}
                 <div class="form-group row">
                     <div class="col col-form-label">{{ field.label }}</div> 
                     <div class="col">{{ field(class_="form-control", autocomplete="off") }}</div>
@@ -22,6 +22,8 @@
                         {{ error }}
                     {% endfor %}
                 {% endfor %}
+                <input type="hidden" name="step" value="2">
+                {{ form.id }}
                 {{ form.submit(class_="form-control form-control-sm") }}
             </form>
         </div>
@@ -61,7 +63,7 @@
                 <tr>
                     <td>{% if addr[2].startswith('г.') %}
                             <!-- Если в поле населенного пункта город, тогда не выводим район -->
-                            {{ addr[0:1] |join(', ') }}, {{ addr[2:-2] |join(', ') }}
+                            {{ addr[0:1] |join(', ') }}, {{ addr[2:5] |join(', ') }}
                         {% else %}
                             {{ addr[:5] |join(', ') }}
                         {% endif %}
@@ -69,7 +71,8 @@
                     <td>{{ addr[5] }}</td>
                     <td>
                     <form action="" method="POST">
-                        <input type="hidden" name="id" value="{{ addr[-1] }}">
+                        <input type="hidden" name="step" value="1">
+                        <input type="hidden" name="id" value="{{ addr[6] }}">
                         <input type="hidden" name="region_id" value="{{ addr[7] }}">
                         <input type="hidden" name="area_id" value="{{ addr[8] }}">
                         <input type="hidden" name="city" value="{{ addr[2] }}">

@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm, CSRFProtect
-from wtforms import TextAreaField, StringField, SelectField, SubmitField
+from wtforms import TextAreaField, StringField, SelectField, SubmitField, HiddenField
 from wtforms.validators import DataRequired
 from libfunc import get_area_owners, get_areas, get_regions
 from config import DB
@@ -16,6 +16,7 @@ class AddAddressForm(FlaskForm):
 
 
 class EditAddressForm(FlaskForm):
+    id = HiddenField()
     area_id = SelectField("Район: ", choices=get_areas(DB))
     city = StringField("Населенный пункт: ")
     street = StringField("Улица: ")

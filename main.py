@@ -18,7 +18,7 @@ def index():
 @app.route('/edit_object.html', methods=['GET','POST'])
 def edit_object():
     addresses = get_addresses(DB)
-    if request.method == 'POST':
+    if request.method == 'POST' and request.values.get('step') == '1':
         _id = request.values.get('id')
         _region_id = request.values.get('region_id')
         _area_id = request.values.get('area_id')
@@ -26,9 +26,20 @@ def edit_object():
         _street = request.values.get('street')
         _building = request.values.get('building')
         _area_owner = request.values.get('area_owner')
+        form = EditAddressForm(request.form, id=_id, region=_region_id, area_id=_area_id,
+                               city=_city, street=_street, building=_building, area_owner=_area_owner)
+        return render_template('edit_object.html', form=form, step=1)
 
+    elif request.method == 'POST' and request.values.get('step') == '2':
+        _id = request.values.get('id')
+        _region_id = request.values.get('region_id')
+        _area_id = request.values.get('area_id')
+        _city = request.values.get('city')
+        _street = request.values.get('street')
+        _building = request.values.get('building')
+        _area_owner = request.values.get('area_owner')
         form = EditAddressForm(request.form, area_id=_area_id, region=_region_id)
-        return render_template('edit_object.html', addresses=addresses, form=form)
+        return render_template('edit_object.html', addresses=addresses, form=form, step=2)
     else:
         return render_template('edit_object.html', addresses=addresses)
 
