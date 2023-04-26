@@ -21,10 +21,10 @@
                             <!-- Если в поле населенного пункта город, тогда не выводим район -->
                             {{ addr[0:1] |join(', ') }}, {{ addr[2:-2] |join(', ') }}
                         {% else %}
-                            {{ addr[:-2] |join(', ') }}
+                            {{ addr[:5] |join(', ') }}
                         {% endif %}
                     </td>
-                    <td>{{ addr[-2] }}</td>
+                    <td>{{ addr[5] }}</td>
                     <td class="position-relative">
                             {% for item in tech_pos[addr[-1]] %}
                                 <span class="badge text-bg-secondary">{{ item[0] }}</span>-

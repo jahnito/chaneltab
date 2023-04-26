@@ -19,7 +19,15 @@ def index():
 def edit_object():
     addresses = get_addresses(DB)
     if request.method == 'POST':
-        form = EditAddressForm()
+        _id = request.values.get('id')
+        _region_id = request.values.get('region_id')
+        _area_id = request.values.get('area_id')
+        _city = request.values.get('city')
+        _street = request.values.get('street')
+        _building = request.values.get('building')
+        _area_owner = request.values.get('area_owner')
+
+        form = EditAddressForm(request.form, area_id=_area_id, region=_region_id)
         return render_template('edit_object.html', addresses=addresses, form=form)
     else:
         return render_template('edit_object.html', addresses=addresses)

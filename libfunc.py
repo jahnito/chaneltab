@@ -28,7 +28,8 @@ def get_addresses(db: str) -> list:
     '''
     connection = sqlite3.connect(db)
     cursor = connection.cursor()
-    cursor.execute("""SELECT region.name, areas.area_name, address.city, address.street, address.building, areas_owners.area_name, address.id
+    cursor.execute("""SELECT region.name, areas.area_name, address.city, address.street, address.building, areas_owners.area_name,
+       address.id, region.id, areas.id, areas_owners.id
        FROM
        address, areas_owners, region, areas
 	   WHERE

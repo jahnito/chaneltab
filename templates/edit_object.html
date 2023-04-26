@@ -8,7 +8,7 @@
             <!-- скрытый отступ - поля -->
         </div>
         <div class="col">
-            <form action="add_object.html" method="post">
+            <form action="edit_object.html" method="post">
                 {{ form.csrf_token() }}
                 {% if form.csrf_token.errors %}
                     <div class="warning">You have submitted an invalid CSRF token</div>
@@ -22,7 +22,7 @@
                         {{ error }}
                     {% endfor %}
                 {% endfor %}
-                {{ form.submit(class_="btn btn-primary") }}
+                {{ form.submit(class_="form-control form-control-sm") }}
             </form>
         </div>
         {% if addr_data %}
@@ -63,14 +63,20 @@
                             <!-- Если в поле населенного пункта город, тогда не выводим район -->
                             {{ addr[0:1] |join(', ') }}, {{ addr[2:-2] |join(', ') }}
                         {% else %}
-                            {{ addr[:-2] |join(', ') }}
+                            {{ addr[:5] |join(', ') }}
                         {% endif %}
                     </td>
-                    <td>{{ addr[-2] }}</td>
+                    <td>{{ addr[5] }}</td>
                     <td>
                     <form action="" method="POST">
                         <input type="hidden" name="id" value="{{ addr[-1] }}">
-                        <input type="submit" value="Редактировать">
+                        <input type="hidden" name="region_id" value="{{ addr[7] }}">
+                        <input type="hidden" name="area_id" value="{{ addr[8] }}">
+                        <input type="hidden" name="city" value="{{ addr[2] }}">
+                        <input type="hidden" name="street" value="{{ addr[3] }}">
+                        <input type="hidden" name="building" value="{{ addr[4] }}">
+                        <input type="hidden" name="area_owner" value="{{ addr[9] }}">
+                        <input type="submit" value="Редактировать" class="form-control form-control-sm">
                     </form>
                     </td>
                 </tr>
