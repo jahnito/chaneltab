@@ -8,7 +8,7 @@
             <!-- скрытый отступ - поля -->
         </div>
         <div class="col">
-            <form action="edit_object.html" method="post">
+            <form action="edit_area.html" method="post">
                 {{ form.csrf_token() }}
                 {% if form.csrf_token.errors %}
                     <div class="warning">You have submitted an invalid CSRF token</div>
@@ -51,7 +51,7 @@
         <!-- скрытый отступ - поля -->
     </div>
     <div class="col">
-        <form action="edit_object.html" method="post">
+        <form action="edit_area.html" method="post">
             {{ form.csrf_token() }}
             {% if form.csrf_token.errors %}
                 <div class="warning">You have submitted an invalid CSRF token</div>
@@ -96,8 +96,8 @@
         <table class="table table-striped table-sm">
             <thead>
                 <tr class="table-active">
-                    <th scope="col">Адрес объекта</th>
-                    <th scope="col">Район / Юрисдикция</th>
+                    <th scope="col">ID района</th>
+                    <th scope="col">Район</th>
                     <th scope="col">Редактировать</th>
                 </tr>
             <thead>
@@ -113,7 +113,7 @@
                     </td>
                     <td>{{ addr[5] }}</td>
                     <td>
-                    <form action="edit_object.html" method="POST">
+                    <form action="edit_area.html" method="POST">
                         <input type="hidden" name="step" value="1">
                         <input type="hidden" name="id" value="{{ addr[6] }}">
                         <input type="hidden" name="region" value="{{ addr[7] }}">

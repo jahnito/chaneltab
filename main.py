@@ -15,35 +15,6 @@ def index():
     return render_template('index.html', addresses=addresses, tech_pos=tech_pos)
 
 
-@app.route('/edit_object.html', methods=['GET','POST'])
-def edit_object():
-    addresses = get_addresses(DB)
-    if request.method == 'POST' and request.values.get('step') == '1':
-        _id = request.values.get('id')
-        _region_id = request.values.get('region_id')
-        _area_id = request.values.get('area_id')
-        _city = request.values.get('city')
-        _street = request.values.get('street')
-        _building = request.values.get('building')
-        _area_owner = request.values.get('area_owner')
-        form = EditAddressForm(request.form, id=_id, region=_region_id, area_id=_area_id,
-                               city=_city, street=_street, building=_building, area_owner=_area_owner)
-        return render_template('edit_object.html', form=form, step=1)
-
-    elif request.method == 'POST' and request.values.get('step') == '2':
-        _id = request.values.get('id')
-        _region_id = request.values.get('region_id')
-        _area_id = request.values.get('area_id')
-        _city = request.values.get('city')
-        _street = request.values.get('street')
-        _building = request.values.get('building')
-        _area_owner = request.values.get('area_owner')
-        form = EditAddressForm(request.form, area_id=_area_id, region=_region_id)
-        return render_template('edit_object.html', addresses=addresses, form=form, step=2)
-    else:
-        return render_template('edit_object.html', addresses=addresses)
-
-
 @app.route('/add_object.html', methods=['GET','POST'])
 def add_object():
     if request.method == 'POST':
@@ -76,5 +47,53 @@ def add_area():
         form = AddAreaForm()
         return render_template('add_area.html', form=form)
 
+
+@app.route('/edit_object.html', methods=['GET','POST'])
+def edit_object():
+    addresses = get_addresses(DB)
+    addr_data = {}
+    if request.method == 'POST':
+        addr_data['id'] = request.values.get('id')
+        addr_data['region'] = request.values.get('region')
+        addr_data['area_id'] = request.values.get('area_id')
+        addr_data['city'] = request.values.get('city')
+        addr_data['street'] = request.values.get('street')
+        addr_data['building'] = request.values.get('building')
+        addr_data['area_owner'] = request.values.get('area_owner')
+    if request.method == 'POST' and request.values.get('step') == '1':
+        form = EditAddressForm()
+        return render_template('edit_object.html', form=form, step=1)
+    elif request.method == 'POST' and request.values.get('step') == '2':
+        message = edit_address(DB, addr_data)
+        print(addr_data)
+        form = EditAddressForm(request.form)
+        return render_template('edit_object.html', form=form, step=2, message=message, addr_data=addr_data)
+    else:
+        return render_template('edit_object.html', addresses=addresses)
+
+
+@app.route('/edit_area.html', methods=['GET','POST'])
+def edit_area():
+    areas = get_areas(DB)
+    addr_data = {}
+    if request.method == 'POST':
+        addr_data['id'] = request.values.get('id')
+        addr_data['region'] = request.values.get('region')
+        addr_data['area_id'] = request.values.get('area_id')
+        addr_data['city'] = request.values.get('city')
+        addr_data['street'] = request.values.get('street')
+        addr_data['building'] = request.values.get('building')
+        addr_data['area_owner'] = request.values.get('area_owner')
+    if request.method == 'POST' and request.values.get('step') == '1':
+        form = EditAddressForm()
+        return render_template('edit_area.html', form=form, step=1)
+    elif request.method == 'POST' and request.values.get('step') == '2':
+        message = edit_address(DB, addr_data)
+        print(addr_data)
+        form = EditAddressForm(request.form)
+        return render_template('edit_area.html', form=form, step=2, message=message, addr_data=addr_data)
+    else:
+        print(areas)
+        return render_template('edit_area.html', areas=areas)
 
 app.run(host='127.0.0.1', port=8080)

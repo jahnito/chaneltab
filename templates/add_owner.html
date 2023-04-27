@@ -6,7 +6,7 @@
             <!-- скрытый отступ - поля -->
         </div>
         <div class="col">
-            <form action="add_area.html" method="post">
+            <form action="add_owner.html" method="post">
                 {{ form.csrf_token() }}
                 {% if form.csrf_token.errors %}
                     <div class="warning">You have submitted an invalid CSRF token</div>

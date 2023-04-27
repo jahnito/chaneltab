@@ -122,3 +122,19 @@ def add_new_area(db, area_data: dict):
             return 'Объект добавлен!'
         except sqlite3.IntegrityError as e:
             return f'Ошибка SQL {e}'
+
+
+def edit_address(db, addr_data: dict):
+    connection = sqlite3.connect(db)
+    cursor = connection.cursor()
+    cursor.execute('''
+                    UPDATE address
+                    SET area_id = ?, city = ?, street = ?, building = ?, region_id = ?, area_owner = ?
+                    WHERE id = ?;
+                    ''', [addr_data.get('area_id'), addr_data.get('city'),
+                          addr_data.get('street'), addr_data.get('building'),
+                          addr_data.get('region'), addr_data.get('area_owner'),
+                          addr_data.get('id')])
+    connection.commit()
+    connection.close()
+    return "Данные об объекте обновлены!"
