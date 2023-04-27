@@ -7,13 +7,13 @@
         <div class="col-1">
             <!-- скрытый отступ - поля -->
         </div>
-        <div class="col">
+        <div class="col-7">
             <form action="edit_area.html" method="post">
                 {{ form.csrf_token() }}
                 {% if form.csrf_token.errors %}
                     <div class="warning">You have submitted an invalid CSRF token</div>
                 {% endif %}
-                {% for field in form if field.name not in ['csrf_token', 'id', 'submit'] %}
+                {% for field in form if field.name not in ['csrf_token', 'submit'] %}
                 <div class="form-group row">
                     <div class="col col-form-label">{{ field.label }}</div> 
                     <div class="col">{{ field(class_="form-control", autocomplete="off") }}</div>
@@ -23,7 +23,6 @@
                     {% endfor %}
                 {% endfor %}
                 <input type="hidden" name="step" value="2">
-                {{ form.id }}
                 {{ form.submit(class_="form-control form-control-sm") }}
             </form>
         </div>
@@ -56,7 +55,7 @@
             {% if form.csrf_token.errors %}
                 <div class="warning">You have submitted an invalid CSRF token</div>
             {% endif %}
-            {% for field in form if field.name not in ['csrf_token', 'id', 'submit'] %}
+            {% for field in form if field.name not in ['csrf_token', 'submit'] %}
             <div class="form-group row">
                 <div class="col col-form-label">{{ field.label }}</div> 
                 <div class="col">{{ field(class_="form-control", autocomplete="off", disabled=True) }}</div>
@@ -66,7 +65,6 @@
                 {% endfor %}
             {% endfor %}
             <input type="hidden" name="step" value="2">
-            {{ form.id }}
         </form>
     </div>
     {% if addr_data %}
@@ -102,26 +100,17 @@
                 </tr>
             <thead>
             <tbody>
-                {% for addr in addresses %}
-                <tr>
-                    <td>{% if addr[2].startswith('г.') %}
-                            <!-- Если в поле населенного пункта город, тогда не выводим район -->
-                            {{ addr[0:1] |join(', ') }}, {{ addr[2:5] |join(', ') }}
-                        {% else %}
-                            {{ addr[:5] |join(', ') }}
-                        {% endif %}
-                    </td>
-                    <td>{{ addr[5] }}</td>
+                {% for area in areas %}
+                {# Выводим описание в сплывающей подсказке, если оно существует для района #}
+                <tr {% if area[2] %} title="{{ area[2] }}" {% endif %}>
+                    <td>{{ area[0] }}</td>
+                    <td>{{ area[1] }}</td>
                     <td>
                     <form action="edit_area.html" method="POST">
                         <input type="hidden" name="step" value="1">
-                        <input type="hidden" name="id" value="{{ addr[6] }}">
-                        <input type="hidden" name="region" value="{{ addr[7] }}">
-                        <input type="hidden" name="area_id" value="{{ addr[8] }}">
-                        <input type="hidden" name="city" value="{{ addr[2] }}">
-                        <input type="hidden" name="street" value="{{ addr[3] }}">
-                        <input type="hidden" name="building" value="{{ addr[4] }}">
-                        <input type="hidden" name="area_owner" value="{{ addr[9] }}">
+                        <input type="hidden" name="id" value="{{ area[0] }}">
+                        <input type="hidden" name="area_name" value="{{ area[1] }}">
+                        <input type="hidden" name="description" value="{{ area[2] }}">
                         <input type="submit" value="Редактировать" class="form-control form-control-sm">
                     </form>
                     </td>

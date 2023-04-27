@@ -31,3 +31,10 @@ class AddAreaForm(FlaskForm):
     area_name = StringField("Наименование района: ")
     description = TextAreaField("Дополнительное описание: ")
     submit = SubmitField("Сохранить")
+
+
+class EditAreaForm(FlaskForm):
+    id = StringField("ID района: ")
+    area_name = StringField("Наименование района: ")
+    description = TextAreaField("Описание: ")
+    submit = SubmitField("Редактировать")

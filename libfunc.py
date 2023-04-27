@@ -47,8 +47,8 @@ def get_addresses(db: str) -> list:
 def get_areas(db) -> list:
     connection = sqlite3.connect(db)
     cursor = connection.cursor()
-    cursor.execute('''SELECT areas.id, areas.area_name FROM areas ORDER BY areas.area_name''')
-    result = [ (i[0], i[1]) for i in cursor ]
+    cursor.execute('''SELECT areas.id, areas.area_name, areas.description FROM areas ORDER BY areas.area_name''')
+    result = [ (i[0], i[1], i[2]) for i in cursor ]
     connection.close()
     return result
 

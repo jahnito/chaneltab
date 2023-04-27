@@ -1,7 +1,7 @@
 # coding:utf8
 from flask import Flask, request, render_template
 from libfunc import *
-from libforms import AddAddressForm, AddAreaForm, EditAddressForm
+from libforms import AddAddressForm, AddAreaForm, EditAddressForm, EditAreaForm
 from config import DB
 
 app = Flask(__name__)
@@ -65,7 +65,6 @@ def edit_object():
         return render_template('edit_object.html', form=form, step=1)
     elif request.method == 'POST' and request.values.get('step') == '2':
         message = edit_address(DB, addr_data)
-        print(addr_data)
         form = EditAddressForm(request.form)
         return render_template('edit_object.html', form=form, step=2, message=message, addr_data=addr_data)
     else:
@@ -75,23 +74,18 @@ def edit_object():
 @app.route('/edit_area.html', methods=['GET','POST'])
 def edit_area():
     areas = get_areas(DB)
-    addr_data = {}
+    area_data = {}
     if request.method == 'POST':
-        addr_data['id'] = request.values.get('id')
-        addr_data['region'] = request.values.get('region')
-        addr_data['area_id'] = request.values.get('area_id')
-        addr_data['city'] = request.values.get('city')
-        addr_data['street'] = request.values.get('street')
-        addr_data['building'] = request.values.get('building')
-        addr_data['area_owner'] = request.values.get('area_owner')
+        area_data['id'] = request.values.get('id')
+        area_data['area_name'] = request.values.get('area_name')
+        area_data['description'] = request.values.get('description')
     if request.method == 'POST' and request.values.get('step') == '1':
-        form = EditAddressForm()
+        form = EditAreaForm()
         return render_template('edit_area.html', form=form, step=1)
     elif request.method == 'POST' and request.values.get('step') == '2':
-        message = edit_address(DB, addr_data)
-        print(addr_data)
-        form = EditAddressForm(request.form)
-        return render_template('edit_area.html', form=form, step=2, message=message, addr_data=addr_data)
+        # message = edit_address(DB, addr_data)
+        form = EditAreaForm()
+        return render_template('edit_area.html', form=form, step=2) #message=message, addr_data=addr_data)
     else:
         print(areas)
         return render_template('edit_area.html', areas=areas)
