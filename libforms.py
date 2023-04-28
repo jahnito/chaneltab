@@ -6,7 +6,7 @@ from config import DB
 
 
 class AddAddressForm(FlaskForm):
-    area_id = SelectField("Район: ", choices=[('', '-- Выберите значение --')] + get_areas(DB))
+    area_id = SelectField("Район: ", choices=[('', '-- Выберите значение --')] + get_areas(DB, scale=2))
     city = StringField("Населенный пункт: ")
     street = StringField("Улица: ")
     building = StringField("Номер строения/корпус/литер: ")
@@ -17,7 +17,7 @@ class AddAddressForm(FlaskForm):
 
 class EditAddressForm(FlaskForm):
     id = HiddenField()
-    area_id = SelectField("Район: ", choices=get_areas(DB))
+    area_id = SelectField("Район: ", choices=get_areas(DB, scale=2))
     city = StringField("Населенный пункт: ")
     street = StringField("Улица: ")
     building = StringField("Номер строения/корпус/литер: ")
